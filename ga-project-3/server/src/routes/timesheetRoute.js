@@ -42,13 +42,14 @@ router.post("/new-timesheet", (request, response) => {
 router.patch("/update-timesheet/:id", (request, response) => {
   timesheetModel.findByIdAndUpdate(request.params.id, request.body, {
     new: true,
-    upsert: true,
+   
   })
     .then((data) => {
       console.log("Update successful!");
       response.send(data);
     })
-    .catch(() => {
+    .catch((error) => {
+      console.log("error:", error);
       console.log("Something went wrong!!");
       response.status(404).send("timesheet was not found!!");
     });
