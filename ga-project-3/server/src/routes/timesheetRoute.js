@@ -56,16 +56,20 @@ router.patch("/update-timesheet/:id", (request, response) => {
 });
 
 // delete route
-router.delete("/delete-timesheet/:id", (request, response) => {
-  timesheetModel.findByIdAndDelete(request.params.id)
-    .then((data) => {
-      console.log("Deleted successfully!");
-      response.send(data);
-    })
-    .catch(() => {
-      console.log("Something went wrong!!");
-      response.status(404).send("timesheet was not found!!");
-    });
+router.delete('/:id', async (req, res) => {
+
+  try {
+     const deletedTime = await Timesheet.findByIdAndRemove(req.params.id);
+      res.json({
+        status:  {
+            code: 200,
+            message: "Resource successfully deleted"
+          },
+        data: deletedTime
+      });
+  } catch(err){
+    res.send(err);
+  }
 });
 
 // Category routes
